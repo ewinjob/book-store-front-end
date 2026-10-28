@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import { Link, useParams } from 'react-router-dom'
 import { viewBooksAPI } from '../../services/apiService'
+import Footer from '../../components/Footer'
+
 
 function View() {
   const [book, setBook] = useState(null)
@@ -111,6 +113,8 @@ function View() {
           </div>
         )}
       </section>
+
+      <Footer/>
     </>
   )
 }

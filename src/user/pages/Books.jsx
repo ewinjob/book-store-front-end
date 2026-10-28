@@ -152,6 +152,8 @@ function Books() {
 
       </aside>
      </main>
+
+     <Footer/>
     
     
 

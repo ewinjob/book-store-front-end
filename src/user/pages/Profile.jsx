@@ -106,6 +106,7 @@ function Profile() {
       </div>
     </section>
 
+    <Footer/>
 
 </>
   )

@@ -4,16 +4,24 @@ import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaFacebookSquare } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
-import { Link } from 'react-router-dom';
-import { Dropdown, DropdownItem } from "flowbite-react";
+import { Link, useNavigate } from 'react-router-dom';
+import { Avatar, Dropdown, DropdownDivider, DropdownHeader, DropdownItem } from "flowbite-react";
+import { HiViewGrid, HiCog, HiCurrencyDollar, HiLogout } from "react-icons/hi";
 
 function Header() {
 
+  const navigate = useNavigate()
   
 
   const userToken = sessionStorage.getItem("userToken")
+  const userData = JSON.parse(sessionStorage.getItem("userData"))
 
+  const handleLogOut=()=>{
+      sessionStorage.removeItem("userToken")
+      sessionStorage.removeItem("userData")
 
+      navigate("/login",{replace:true});
+  }
 
   return (
     
@@ -41,16 +49,37 @@ function Header() {
 
         {
           userToken? (
-          <div className='mx-2'>
-             <Dropdown label="profile" inline dismissOnClick={false} renderTrigger={() => <span>
-             <img src="https://static.vecteezy.com/system/resources/previews/021/548/095/original/default-profile-picture-avatar-user-avatar-icon-person-icon-head-icon-profile-picture-icons-default-anonymous-user-male-and-female-businessman-photo-placeholder-social-network-avatar-portrait-free-vector.jpg" className='rounded-3xl' width={25} alt="" />
-                 </span>}>
-      <DropdownItem>Dashboard</DropdownItem>
-      <DropdownItem>Settings</DropdownItem>
-      <DropdownItem>Earnings</DropdownItem>
-      <DropdownItem>Sign out</DropdownItem>
-    </Dropdown>
-          </div>
+         <div className="mx-2">
+  <Dropdown
+    arrowIcon={false}
+    inline
+    label={
+      <Avatar
+        alt="User menu"
+        img="https://static.vecteezy.com/system/resources/previews/021/548/095/original/default-profile-picture-avatar-user-avatar-icon-person-icon-head-icon-profile-picture-icons-default-anonymous-user-male-and-female-businessman-photo-placeholder-social-network-avatar-portrait-free-vector.jpg"
+        rounded
+        size="sm"
+        className="rounded-full ring-2 ring-gray-200 transition hover:ring-blue-500"
+      />
+    }
+  >
+    <DropdownHeader>
+      <span className="block text-sm font-semibold text-gray-900">{userData.username}</span>
+      <span className="block truncate text-xs text-gray-500">{userData.email}</span>
+    </DropdownHeader>
+
+    <DropdownItem as={Link} to={'/profile/:id'}  icon={HiViewGrid}>Profile</DropdownItem>
+    <DropdownItem as={Link} to={'/profile/:id'}  icon={HiCog}>Settings</DropdownItem>
+    <DropdownItem as={Link} to={'/profile/:id'}  icon={HiCurrencyDollar}>Earnings</DropdownItem>
+   
+
+    <DropdownDivider />
+
+    <DropdownItem onClick={handleLogOut} icon={HiLogout} className="text-red-600 hover:bg-red-50!">
+      Sign out
+    </DropdownItem>
+  </Dropdown>
+</div>
           ) :  (
                <div>
         <Link to={'/login'} >
