@@ -11,8 +11,8 @@ function Profile() {
 
   const tabs = ['Upload Book', 'Upload Books Status', 'Purchase History']
 
-  const name = 'ringoo'
-  const avatar = 'https://i.pravatar.cc/300' 
+ 
+  const userData = JSON.parse(sessionStorage.getItem('userData'))
 
   const handleEdit = () => {
    
@@ -32,13 +32,13 @@ function Profile() {
       <div className="mx-auto max-w-5xl px-4 sm:px-8">
         
         <div className="-mt-16 h-32 w-32 overflow-hidden rounded-full border-4 border-red-text-red-300 bg-gray-200 sm:-mt-20 sm:h-40 sm:w-40">
-          <img src={avatar} alt={name} className="h-full w-full object-cover" />
+          <img src='' alt='' className="h-full w-full object-cover" />
         </div>
 
         
         <div className="mt-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <h2 className="text-xl font-bold sm:text-2xl">{name}</h2>
+            <h2 className="text-xl font-bold sm:text-2xl">{userData.username}</h2>
             <svg
               viewBox="0 0 24 24"
               className="h-5 w-5 text-sky-500"

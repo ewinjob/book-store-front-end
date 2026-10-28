@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from 'react-router-dom';
 import { loginAPI, registerAPI } from '../services/apiService';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
  
 export default function Auth({insideRegister}) {
   console.log(insideRegister);   //value:true -- (props)
@@ -128,19 +130,36 @@ export default function Auth({insideRegister}) {
                   Forgot password?
                 </a>
               </div>
+
+              <div className='mx-6'>
+                 <button type="button" onClick={handleLogin} className="w-full rounded-lg bg-black py-3 font-semibold text-white transition hover:bg-gray-800"> Login </button>
+              </div>
  
               <div className="mb-4 flex items-center gap-3">
                 <hr className="flex-1 border-gray-300" />
                 <span className="text-sm text-gray-500">OR</span>
                 <hr className="flex-1 border-gray-300" />
               </div>
+
+              
  
-              <Link>
-                <div type="button" className="mb-4 flex w-full items-center justify-center gap-4 rounded-lg border border-gray-300 bg-white py-3 font-semibold text-black transition hover:bg-gray-100"> <FcGoogle className='text-2xl'/> Sign in with google </div>
-              </Link>
+           
+           <div className='my-2'> 
+             <GoogleLogin
+   onSuccess={credentialResponse => {
+    console.log(credentialResponse);
+    let decode = jwtDecode(credentialResponse.credential)
+    console.log(decode);
+    
+     }}
+    onError={() => {
+    console.log('Login Failed');
+       }}
+      />
+           </div>
 
              
-              <button type="button" onClick={handleLogin} className="w-full rounded-lg bg-black py-3 font-semibold text-white transition hover:bg-gray-800"> Login </button>
+             
              
  
               <h4 className="mt-6 text-center text-sm text-gray-600">
