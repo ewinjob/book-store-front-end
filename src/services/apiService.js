@@ -23,3 +23,7 @@ export const latestBooksAPI=async()=>{
 export const viewBooksAPI=async(id)=>{
     return await axiosInstance.get(`/api/viewBooks/${id}`)
 }
+
+export const googleLoginAPI=async(reqBody)=>{
+    return await axiosInstance.post('/api/googleLogin',reqBody,{})
+}

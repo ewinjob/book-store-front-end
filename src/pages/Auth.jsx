@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
-import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from 'react-router-dom';
-import { loginAPI, registerAPI } from '../services/apiService';
+import { googleLoginAPI, loginAPI, registerAPI } from '../services/apiService';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
  
 export default function Auth({insideRegister}) {
-  console.log(insideRegister);   //value:true -- (props)
 
+  console.log(insideRegister);   //value:true -- (props)
 
   const navigate = useNavigate()
 
@@ -49,6 +48,22 @@ export default function Auth({insideRegister}) {
       console.log(err);
     }
   }
+
+  const handleGoogleLogin = async(credential)=>{
+    try{
+
+      console.log(credential);
+
+      const {email,password,username,picture}=credential
+      
+      const res =await googleLoginAPI({email,password:"googlePassword",username,picture})
+      console.log(res);      
+        
+    }catch(err){
+      console.log(err);
+      
+    }
+  }
   
   
   return (
@@ -84,7 +99,7 @@ export default function Auth({insideRegister}) {
               <input
                 type="text"
                 onChange={(e)=>setUserDetails({...userDetails,username:e.target.value})}
-                placeholder="Enter your usernmae"
+                placeholder="Enter your username"
                 required
                 className="mb-4 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 outline-none focus:border-black focus:ring-2 focus:ring-gray-200"
               />
@@ -150,7 +165,9 @@ export default function Auth({insideRegister}) {
     console.log(credentialResponse);
     let decode = jwtDecode(credentialResponse.credential)
     console.log(decode);
-    
+
+     handleGoogleLogin(decode)
+   
      }}
     onError={() => {
     console.log('Login Failed');
