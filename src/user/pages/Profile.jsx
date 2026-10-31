@@ -32,7 +32,7 @@ function Profile() {
       <div className="mx-auto max-w-5xl px-4 sm:px-8">
         
         <div className="-mt-16 h-32 w-32 overflow-hidden rounded-full border-4 border-red-text-red-300 bg-gray-200 sm:-mt-20 sm:h-40 sm:w-40">
-          <img src='' alt='' className="h-full w-full object-cover" />
+          <img src='' alt='userProfile' className="h-full w-full object-cover" />
         </div>
 
         

@@ -41,8 +41,13 @@ export default function Auth({insideRegister}) {
         sessionStorage.setItem("userData",JSON.stringify(res.data.existingUser))
         sessionStorage.setItem("userToken",res.data.token)
       }
-      
-      navigate('/')
+      if(res.data.existingUser.role==="user"){
+        navigate('/')
+      }
+
+      if(res.data.existingUser.role==="admin"){
+        navigate("/admin")
+      }
 
     }catch(err){
       console.log(err);
@@ -50,24 +55,30 @@ export default function Auth({insideRegister}) {
   }
 
   const handleGoogleLogin = async(credential)=>{
-    try{
+      const {email,name,picture}=credential 
 
-      console.log(credential);
+      const googleUserData={
+        username:name,
+        email:email,
+        picture:picture,
+        password:"google-auth"
+      }
 
-      const {email,password,username,picture}=credential
-      
-      const res =await googleLoginAPI({email,password:"googlePassword",username,picture})
+    try{   
+      const res =await googleLoginAPI(googleUserData)
       console.log(res);     
 
     if (res.status === 200 || res.status === 201) {
-  sessionStorage.setItem("userData", JSON.stringify(res.data.existingUser));
+  sessionStorage.setItem("userData", JSON.stringify(res.data.existingUser || res.data.newUser));
   sessionStorage.setItem("userToken", res.data.token);
   navigate("/");
 }           
+ 
     }catch(err){
       console.log(err);
     }
   }
+
 
   
   
