@@ -57,13 +57,18 @@ export default function Auth({insideRegister}) {
       const {email,password,username,picture}=credential
       
       const res =await googleLoginAPI({email,password:"googlePassword",username,picture})
-      console.log(res);      
-        
+      console.log(res);     
+
+    if (res.status === 200 || res.status === 201) {
+  sessionStorage.setItem("userData", JSON.stringify(res.data.existingUser));
+  sessionStorage.setItem("userToken", res.data.token);
+  navigate("/");
+}           
     }catch(err){
       console.log(err);
-      
     }
   }
+
   
   
   return (

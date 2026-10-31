@@ -3,17 +3,19 @@ import { GrFormSearch } from "react-icons/gr";
 import Header from '../components/Header';
 import Footer from '../../components/Footer';
 import { getAllBooksAPI } from '../../services/apiService';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 
 function Books() {
 
   const [books,setBooks]=useState([])
-  const[search,setSearch]=useState('')
+  const navigate = useNavigate()
+
+  const [token,setToken]=useState('')
 
 
-
+    const userToken = sessionStorage.getItem("userToken")
 
 
   const getAllBook=async()=>{
@@ -32,21 +34,26 @@ function Books() {
     
   }
 
-  useEffect(()=>{getAllBook()},[])
+  useEffect(()=>{getAllBook();
+    setToken(sessionStorage.getItem('userToken'))
+  },[token])
 
   return (
     <>
     
      <Header/>
 
+     {
+      token?
+      (
+         <div>
     <div className='text-center mt-10'>
       <h2 className='text-4xl font-extrabold font-mono'>
         All Books
       </h2>
     </div>
 
-    
-<div className="flex items-center justify-center p-5">
+    <div className="flex items-center justify-center p-5">
   <div className="rounded-lg p-5">
     <div className="flex items-stretch">
       <div className="flex w-12 shrink-0 items-center justify-center rounded-tl-lg rounded-bl-lg border-r border-gray-200 bg-blue-500">
@@ -147,11 +154,19 @@ function Books() {
     <p>No Books</p>
   )
 }
-
-  
-
       </aside>
      </main>
+  </div>
+      ) : (
+        <div>
+          {
+            navigate('/login')
+          }
+        </div>
+      )
+     }
+
+     
 
      <Footer/>
     

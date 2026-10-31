@@ -164,9 +164,9 @@ useEffect(() => {
 
       <nav className='bg-black text-white h-12 sm:h-14 flex items-center justify-center'>
         <ul className='list-none flex items-center justify-center gap-5 sm:gap-8 text-sm sm:text-base'>
-          <li><Link to={'/'} className='py-1 hover:border-t'>Home</Link></li>
-          <li><Link to={'/books'} className='py-1 hover:border-t'>Books</Link></li>
-          <li><Link to={'/contact'} className='py-1 hover:border-t'>Contact</Link></li>
+          <li><Link to={'/'} className="py-1 border-t-2 border-transparent hover:border-white transition-colors duration-500 ease-in-out">Home</Link></li>
+          <li><Link to={'/books'} className="py-1 border-t-2 border-transparent hover:border-white transition-colors duration-500 ease-in-out">Books</Link></li>
+          <li><Link to={'/contact'} className="py-1 border-t-2 border-transparent hover:border-white transition-colors duration-500 ease-in-out">Contact</Link></li>
         </ul>
       </nav>
     </>
