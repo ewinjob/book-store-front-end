@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Footer from '../../components/Footer';
 import { getAllBooksAPI } from '../../services/apiService';
 import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 
 
@@ -18,10 +19,8 @@ function Books() {
     const userToken = sessionStorage.getItem("userToken")
 
 
-  const getAllBook=async()=>{
-    
+  const getAllBook=async()=>{ 
     try{
-
           const res = await getAllBooksAPI()
     console.log(res.data.getBooks);
 
@@ -34,9 +33,26 @@ function Books() {
     
   }
 
-  useEffect(()=>{getAllBook();
-    setToken(sessionStorage.getItem('userToken'))
-  },[token])
+    useEffect(() => {
+    const userToken = sessionStorage.getItem('userToken')
+
+    if (userToken) {
+      setToken(userToken)
+      getAllBook()
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Please login first',
+      }).then(() => {
+        navigate('/login')
+      })
+    }
+  }, [])
+
+  // useEffect(()=>{
+  //   getAllBook();
+  //   setToken(sessionStorage.getItem('userToken'))
+  // },[token])
 
   return (
     <>
@@ -158,11 +174,7 @@ function Books() {
      </main>
   </div>
       ) : (
-        <div>
-          {
-            navigate('/login')
-          }
-        </div>
+        null
       )
      }
 

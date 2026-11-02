@@ -16,7 +16,7 @@ function Home() {
     try {
       const res = await latestBooksAPI()
       // handles both spellings, so it works whichever your backend sends
-      setLatestBooks(res?.data?.latestBooks ?? res?.data?.latesetBooks ?? [])
+      setLatestBooks(res?.data?.latestBooks ?? res?.data?.latestBooks ?? [])
     } catch (err) {
       console.log('Failed to load latest books', err)
     } finally {
@@ -37,14 +37,14 @@ function Home() {
 
   const handleNewsletter = (e) => {
     e.preventDefault()
-    // TODO: call newsletter API here
+    
   }
 
   return (
     <>
       <Header />
 
-      {/* Hero */}
+     
       <main className="relative h-screen w-full overflow-hidden">
         <img
           src="https://wallpaperaccess.com/full/5765638.jpg"
@@ -120,7 +120,7 @@ function Home() {
         </div>
       </main>
 
-      {/* Featured authors + testimonials */}
+      
       <div className="mt-20 bg-white text-neutral-900">
         <section className="mx-auto max-w-5xl px-6 py-16">
           <div className="grid items-center gap-10 md:grid-cols-2">
