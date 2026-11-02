@@ -93,7 +93,7 @@ useEffect(() => {
     className="flex items-center rounded-full focus:outline-none"
   >
     <img
-      src="https://static.vecteezy.com/system/resources/previews/021/548/095/original/default-profile-picture-avatar-user-avatar-icon-person-icon-head-icon-profile-picture-icons-default-anonymous-user-male-and-female-businessman-photo-placeholder-social-network-avatar-portrait-free-vector.jpg"
+      src={userData.picture}
       alt="User menu"
       className="h-9 w-9 rounded-full object-cover ring-2 ring-gray-200 transition hover:ring-blue-500"
     />
