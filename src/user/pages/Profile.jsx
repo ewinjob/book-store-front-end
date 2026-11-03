@@ -32,7 +32,7 @@ function Profile() {
       <div className="mx-auto max-w-5xl px-4 sm:px-8">
         
         <div className="-mt-16 h-32 w-32 overflow-hidden rounded-full border-4 border-red-text-red-300 bg-gray-200 sm:-mt-20 sm:h-40 sm:w-40">
-          <img src='' alt='userProfile' className="h-full w-full object-cover" />
+          <img src={userData.picture} alt='userProfile' className="h-full w-full object-cover" />
         </div>
 
         
@@ -92,7 +92,49 @@ function Profile() {
     }}
   >
     <TabItem active title="Profile" icon={HiUserCircle}>
-      ...
+      <section className='bg-gray-200 rounded-lg h-auto'>
+        <h1 className='text-center'> Upload Book Details </h1>
+        <div>
+            <div>
+               <form className='flex justify-between '>
+                  <div className='p-5  flex flex-col gap-5 w-96'>
+                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Book Title' />
+                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Author' />
+                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Book Cover img URL' />
+                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Total Pages' />
+                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Original Price' />
+                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Discount Price' />
+                <textarea className="bg-white p-1 rounded-sm"></textarea>
+                  </div>
+
+                <div className='p-5  flex flex-col gap-5 w-96'>
+                   <input type="text" className='bg-white p-1 rounded-sm' placeholder='Publisher' />
+                <input type="text" className='bg-white p-1 rounded-sm' placeholder='ISBN' />
+                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Language' />
+                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Category' />
+
+                  <div className='flex justify-center items-center'>
+                    <img src="https://static.vecteezy.com/system/resources/previews/015/337/675/original/transparent-upload-icon-free-png.png" alt="" width={200} />
+                  </div>
+
+                </div>
+               </form>
+                   <div className='flex justify-end mx-4 py-4 gap-8'>
+                  
+                    <a href="#_" class="px-5 py-2 relative rounded group overflow-hidden font-medium bg-gray-50 text-white-600 inline-block">
+                      <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-gray-600 group-hover:h-full opacity-90"></span>
+                      <span class="relative group-hover:text-white">Reset</span>
+                                    </a>
+
+                       <a href="#_" class="rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer border-b-4 border-l-2 active:border-purple-600 active:shadow-none shadow-lg bg-linear-to-tr from-purple-600 to-purple-500 border-purple-700 text-white">
+                      <span class="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-32 group-hover:h-32 opacity-10"></span>
+                       <span class="relative">Upload Book Details</span>
+                      </a>
+                </div>
+
+             </div>
+        </div>
+      </section>
     </TabItem>
     <TabItem title="Dashboard" icon={MdDashboard}>
       ...
