@@ -7,12 +7,21 @@ const axiosInstance =  axios.create({
 
 
 axiosInstance.interceptors.request.use(
-
+    (config)=>{
+      const  token = sessionStorage.getItem("userToken")
+      if(token){
+        config.headers.Authorization = `Bearer ${token}`
+      }
+      return config;
+    },
+    (error)=>{
+      return Promise.reject(error)
+    }
 )
 
 axiosInstance.interceptors.response.use(
     function (response){
-        console.log('API responce Recieved.......');
+        console.log('API response Received.......');
         return response
     },
     function (error){ 

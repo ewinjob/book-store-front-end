@@ -27,3 +27,7 @@ export const viewBooksAPI=async(id)=>{
 export const googleLoginAPI=async(reqBody)=>{
     return await axiosInstance.post('/api/googleLogin',reqBody,{})
 }
+
+export const addBooksAPI=async(reqBody)=>{
+    return await axiosInstance.post('/api/addBook',reqBody,{})
+}

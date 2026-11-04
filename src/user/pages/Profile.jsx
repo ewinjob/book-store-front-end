@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { TabItem, Tabs } from "flowbite-react";
-import { HiAdjustments, HiClipboardList, HiUserCircle } from "react-icons/hi";
-import { MdDashboard } from "react-icons/md";
+import { MdHistory } from "react-icons/md";
+import { TbBookUpload } from "react-icons/tb";
+import { GiBookmark } from "react-icons/gi";
 import Header from '../components/Header';
 import Footer from '../../components/Footer';
 
@@ -9,13 +10,55 @@ import Footer from '../../components/Footer';
 
 function Profile() {
 
-  const tabs = ['Upload Book', 'Upload Books Status', 'Purchase History']
+  const [bookDetail,setBookDetails]=useState({
+    title:"",
+    author:"",
+    totalPages:"",
+    imageURL:"",
+    price:"",
+    discountPrice:"",
+    abstract:"",
+    category:"",
+    userMail:"",
+    uploadImages:[],
+    publisher:"",
+    language:"",
+    isbn:""
+  })
+
+  const [preview,setPreview]=useState("")
+  const [previewList,setPreviewList]=useState([])
+
+  console.log(bookDetail);
+  
 
  
   const userData = JSON.parse(sessionStorage.getItem('userData'))
 
   const handleEdit = () => {
    
+  }
+
+
+  const handleSubmit=()=>{
+      console.log("submit",bookDetail);
+      
+  }
+
+  const handleUploadImages=(e)=>{
+     console.log(e.target.files[0]);
+     const imgFiles = e.target.files[0];
+
+     const dummyImage=bookDetail.uploadImages;
+      setBookDetails({...bookDetail,uploadImages:dummyImage})
+
+      const url = URL.createObjectURL(imgFiles)
+      console.log(url);
+      setPreview(url)
+
+      const dummyPreviewList = previewList;
+      dummyPreviewList.push(url)
+      setPreviewList(dummyPreviewList)
   }
 
   return (
@@ -91,44 +134,73 @@ function Profile() {
       },
     }}
   >
-    <TabItem active title="Profile" icon={HiUserCircle}>
+    <TabItem active title="Upload Book" icon={GiBookmark}>
       <section className='bg-gray-200 rounded-lg h-auto'>
         <h1 className='text-center'> Upload Book Details </h1>
         <div>
             <div>
                <form className='flex justify-between '>
-                  <div className='p-5  flex flex-col gap-5 w-96'>
-                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Book Title' />
-                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Author' />
-                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Book Cover img URL' />
-                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Total Pages' />
-                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Original Price' />
-                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Discount Price' />
-                <textarea className="bg-white p-1 rounded-sm"></textarea>
+                  <div className='p-5  flex flex-col gap-4 w-96'>
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,title:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Book Title' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,author:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Author' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,imageURL:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Book Cover img URL' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,totalPages:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Total Pages' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,price:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Original Price' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,discountPrice:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Discount Price' />
+                <textarea onChange={(e)=>setBookDetails({...bookDetail,abstract:e.target.value})} className="bg-white p-1 rounded-sm" rows={4} placeholder='abstract'></textarea>
                   </div>
 
-                <div className='p-5  flex flex-col gap-5 w-96'>
-                   <input type="text" className='bg-white p-1 rounded-sm' placeholder='Publisher' />
-                <input type="text" className='bg-white p-1 rounded-sm' placeholder='ISBN' />
-                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Language' />
-                <input type="text" className='bg-white p-1 rounded-sm' placeholder='Category' />
+                <div className='p-5  flex flex-col gap-4 w-96'>
+                   <input type="text" onChange={(e)=>setBookDetails({...bookDetail,publisher:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Publisher' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,isbn:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='ISBN' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,language:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Language' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,category:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Category' />
 
                   <div className='flex justify-center items-center'>
-                    <img src="https://static.vecteezy.com/system/resources/previews/015/337/675/original/transparent-upload-icon-free-png.png" alt="" width={200} />
+                    {
+                      previewList.length<1 &&
+                      <label htmlFor="imageUpload">
+                      <input type="file" onChange={(e)=>handleUploadImages(e)} id="imageUpload" hidden/>
+                      <img className='rounded-full' src={"https://tse4.mm.bing.net/th/id/OIP.XrO7JLo3ig3qMCDKOCW3AwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"} alt="" width={200} />
+                    </label>
+                    }
+                  </div>
+
+                  {/* image array */}
+
+                  <div className='flex justify-around '>
+                    {
+                      preview && 
+                      previewList.map((item)=>(
+                        <div className=''>
+                          <img src={item} width={100} height={100} className='rounded-sm' alt=''/>
+                        </div>
+                      ))
+                    }
+                  </div>
+
+                  <div>
+                    {
+                      previewList.length>0 && previewList.length<3 &&
+                       <label htmlFor="imageUpload">
+                      <input type="file" onChange={(e)=>handleUploadImages(e)} id="imageUpload" hidden/>
+                      <img className='rounded-full' src={"https://th.bing.com/th/id/OIP.LB_L56Morcg5zDObNN3cKgHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3"} alt="" width={50} />
+                    </label>
+                    }
                   </div>
 
                 </div>
                </form>
                    <div className='flex justify-end mx-4 py-4 gap-8'>
                   
-                    <a href="#_" class="px-5 py-2 relative rounded group overflow-hidden font-medium bg-gray-50 text-white-600 inline-block">
-                      <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-gray-600 group-hover:h-full opacity-90"></span>
-                      <span class="relative group-hover:text-white">Reset</span>
+                    <a href="#_" className="px-5 py-2 relative rounded group overflow-hidden font-medium bg-gray-50 text-white-600 inline-block">
+                      <span className="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-gray-600 group-hover:h-full opacity-90"></span>
+                      <span className="relative group-hover:text-white">Reset</span>
                                     </a>
 
-                       <a href="#_" class="rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer border-b-4 border-l-2 active:border-purple-600 active:shadow-none shadow-lg bg-linear-to-tr from-purple-600 to-purple-500 border-purple-700 text-white">
-                      <span class="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-32 group-hover:h-32 opacity-10"></span>
-                       <span class="relative">Upload Book Details</span>
+                       <a href="#_"  onClick={handleSubmit} className="rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer border-b-4 border-l-2 active:border-purple-600 active:shadow-none shadow-lg bg-linear-to-tr from-purple-600 to-purple-500 border-purple-700 text-white">
+                      <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-32 group-hover:h-32 opacity-10"></span>
+                       <span className="relative">Upload Book Details</span>
                       </a>
                 </div>
 
@@ -136,10 +208,10 @@ function Profile() {
         </div>
       </section>
     </TabItem>
-    <TabItem title="Dashboard" icon={MdDashboard}>
+    <TabItem title="Upload Book Status" icon={TbBookUpload}>
       ...
     </TabItem>
-    <TabItem title="Settings" icon={HiAdjustments}>
+    <TabItem title="Purchase History" icon={MdHistory}>
       ...
     </TabItem>
   </Tabs>
