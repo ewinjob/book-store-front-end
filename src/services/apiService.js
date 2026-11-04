@@ -1,5 +1,5 @@
 
-import axiosInstance from "../api/axiosService";
+import axiosInstance from "../api/axiosInstance";
 
 
 export const registerAPI=async(reqBody)=>{

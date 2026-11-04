@@ -1,23 +1,58 @@
-import axiosInstance from "./axiosInstance";
+import axios from'axios'
 
-const axiosService = async (httpMethod, url, reqBody,reqHeader) => {
-    try {
-        const response = await axiosInstance({
-            method: httpMethod,
-            url: url,
-            data: reqBody,
-            header: reqHeader
-        });
+const axiosInstance =  axios.create({
+    baseURL:'http://localhost:3000',
+    timeout:10000
+})
 
-        return response;
 
-    } catch (err) {
-        console.log(err);
-        throw err;
+axiosInstance.interceptors.request.use(
+    (config)=>{
+      const  token = sessionStorage.getItem("userToken")
+      if(token){
+        config.headers.Authorization = `Bearer ${token}`
+      }
+      return config;
+    },
+    (error)=>{
+      return Promise.reject(error)
     }
-};
+)
 
-export default axiosService;
+axiosInstance.interceptors.response.use(
+    function (response){
+        console.log('API response Received.......');
+        return response
+    },
+    function (error){ 
+    if (error.response) {
+      // Server responded with a status code
+      const status = error.response.status;
 
+      console.log("Status:", status);
+      console.log("Server Response:", error.response.data);
 
+      if (status === 401) {
+        console.log("Unauthorized error");
+      } 
+      else if (status === 404) {
+        console.log("API is not found");
+      } 
+      else if (status === 500) {
+        console.log("Something went wrong on server");
+      }
+    } 
+    
+    else if (error.request) {
+      // Request was sent but server did not respond
+      console.log("No response from the server");
+    } 
+    
+    else {
+      // Error while setting up the request
+      console.log("Error:", error.message);
+    }
+    }
+);
 
+export default axiosInstance

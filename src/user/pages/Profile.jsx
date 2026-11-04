@@ -5,6 +5,7 @@ import { TbBookUpload } from "react-icons/tb";
 import { GiBookmark } from "react-icons/gi";
 import Header from '../components/Header';
 import Footer from '../../components/Footer';
+import Edit from '../components/Edit';
 
 
 
@@ -29,15 +30,13 @@ function Profile() {
   const [preview,setPreview]=useState("")
   const [previewList,setPreviewList]=useState([])
 
+   const [openEdit, setOpenEdit] = useState(false)
+
   console.log(bookDetail);
   
 
  
   const userData = JSON.parse(sessionStorage.getItem('userData'))
-
-  const handleEdit = () => {
-   
-  }
 
 
   const handleSubmit=()=>{
@@ -101,7 +100,7 @@ function Profile() {
           </div>
 
           <button
-            onClick={handleEdit}
+            onClick={() => setOpenEdit(true)}
             className="flex items-center gap-2 rounded bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
@@ -109,7 +108,9 @@ function Profile() {
             </svg>
             Edit
           </button>
+          <Edit open={openEdit} onClose={() => setOpenEdit(false)} />
         </div>
+
 
         <p className="mt-3 text-lg text-amber-400">✨</p>
 
@@ -168,7 +169,7 @@ function Profile() {
 
                   {/* image array */}
 
-                  <div className='flex justify-around '>
+                  <div className='flex justify-around'> 
                     {
                       preview && 
                       previewList.map((item)=>(
