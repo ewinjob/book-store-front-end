@@ -6,12 +6,13 @@ import { GiBookmark } from "react-icons/gi";
 import Header from '../components/Header';
 import Footer from '../../components/Footer';
 import Edit from '../components/Edit';
+import { addBooksAPI } from '../../services/apiService';
 
 
 
 function Profile() {
 
-  const [bookDetail,setBookDetails]=useState({
+  const [bookDetails,setBookDetails]=useState({
     title:"",
     author:"",
     totalPages:"",
@@ -32,32 +33,64 @@ function Profile() {
 
    const [openEdit, setOpenEdit] = useState(false)
 
-  console.log(bookDetail);
+  console.log(bookDetails);
   
 
  
   const userData = JSON.parse(sessionStorage.getItem('userData'))
+   const userToken =sessionStorage.getItem("userToken")
 
+  const handleSubmit=async()=>{
+      console.log("submit",bookDetails);
 
-  const handleSubmit=()=>{
-      console.log("submit",bookDetail);
+      const reqBody = new FormData()
+      for(let key in bookDetails){
+        if(key != 'uploadImages'){
+            reqBody.append(key,bookDetails[key])
+        }else{
+          bookDetails.uploadImages.forEach(item=>(
+            reqBody.append('uploadImages',item)
+          ))
+        }
+      }
+
+    const reqHeader ={
+      Authorization:`Bearer ${userToken}`
+    }
+    
+   try{
+     const res=await addBooksAPI(reqBody,reqHeader)
+    console.log(res);
+   }
+   catch(err){
+    console.log("showing",err);
+    
+   }
+    
       
   }
 
   const handleUploadImages=(e)=>{
+
      console.log(e.target.files[0]);
-     const imgFiles = e.target.files[0];
+    let imgArray = bookDetails.uploadImages
+    if (imgArray.length < 3) {
+      imgArray.push(e.target.files[0])
+    }
 
-     const dummyImage=bookDetail.uploadImages;
-      setBookDetails({...bookDetail,uploadImages:dummyImage})
+    setBookDetails({ ...bookDetails, uploadImages: imgArray })
 
-      const url = URL.createObjectURL(imgFiles)
-      console.log(url);
-      setPreview(url)
+    let imgUrl = URL.createObjectURL(e.target.files[0])
+    console.log(imgUrl);
+    setPreview(imgUrl)
 
-      const dummyPreviewList = previewList;
-      dummyPreviewList.push(url)
-      setPreviewList(dummyPreviewList)
+    let imageListArray = previewList
+    if (imageListArray.length < 3) {
+      imageListArray.push(imgUrl)
+    }
+    setPreviewList(imageListArray)
+    console.log(previewList);
+
   }
 
   return (
@@ -142,20 +175,20 @@ function Profile() {
             <div>
                <form className='flex justify-between '>
                   <div className='p-5  flex flex-col gap-4 w-96'>
-                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,title:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Book Title' />
-                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,author:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Author' />
-                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,imageURL:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Book Cover img URL' />
-                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,totalPages:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Total Pages' />
-                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,price:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Original Price' />
-                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,discountPrice:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Discount Price' />
-                <textarea onChange={(e)=>setBookDetails({...bookDetail,abstract:e.target.value})} className="bg-white p-1 rounded-sm" rows={4} placeholder='abstract'></textarea>
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetails,title:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Book Title' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetails,author:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Author' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetails,imageURL:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Book Cover img URL' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetails,totalPages:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Total Pages' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetails,price:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Original Price' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetails,discountPrice:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Discount Price' />
+                <textarea onChange={(e)=>setBookDetails({...bookDetails,abstract:e.target.value})} className="bg-white p-1 rounded-sm" rows={4} placeholder='abstract'></textarea>
                   </div>
 
                 <div className='p-5  flex flex-col gap-4 w-96'>
-                   <input type="text" onChange={(e)=>setBookDetails({...bookDetail,publisher:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Publisher' />
-                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,isbn:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='ISBN' />
-                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,language:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Language' />
-                <input type="text" onChange={(e)=>setBookDetails({...bookDetail,category:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Category' />
+                   <input type="text" onChange={(e)=>setBookDetails({...bookDetails,publisher:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Publisher' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetails,isbn:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='ISBN' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetails,language:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Language' />
+                <input type="text" onChange={(e)=>setBookDetails({...bookDetails,category:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Category' />
 
                   <div className='flex justify-center items-center'>
                     {
@@ -173,7 +206,7 @@ function Profile() {
                     {
                       preview && 
                       previewList.map((item)=>(
-                        <div className=''>
+                        <div className='' key={item}>
                           <img src={item} width={100} height={100} className='rounded-sm' alt=''/>
                         </div>
                       ))

@@ -2,6 +2,8 @@
 import axiosInstance from "../api/axiosInstance";
 
 
+
+
 export const registerAPI=async(reqBody)=>{
  return await axiosInstance.post('/api/register',reqBody)
 }
@@ -28,6 +30,8 @@ export const googleLoginAPI=async(reqBody)=>{
     return await axiosInstance.post('/api/googleLogin',reqBody,{})
 }
 
-export const addBooksAPI=async(reqBody)=>{
-    return await axiosInstance.post('/api/addBook',reqBody,{})
+export const addBooksAPI=async(reqBody,reqHeader)=>{
+    return await axiosInstance.post('/api/addBook',reqBody,{
+        headers:reqHeader
+    })
 }
