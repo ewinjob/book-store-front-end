@@ -35,3 +35,18 @@ export const addBooksAPI=async(reqBody,reqHeader)=>{
         headers:reqHeader
     })
 }
+
+
+//admin
+export const getAllBooksAdminAPI=async(reqHeader)=>{
+ return await axiosInstance.get('/api/admin-getBooks',{},{
+    headers:reqHeader
+ })
+}
+
+export const getAllUsersAdminAPI=async(reqHeader)=>{
+ return await axiosInstance.get('/api/admin-getUsers',{},{
+    headers:reqHeader
+ })
+}
+
