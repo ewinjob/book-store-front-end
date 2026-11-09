@@ -5,6 +5,8 @@ import {
 } from 'recharts'
 import { FaBook, FaUsers, FaUserTie, FaPowerOff, FaCog, FaDatabase, FaChartBar } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import AdminHeader from '../components/AdminHeader'
+import AdminSidebar from '../components/AdminSidebar'
 
 const barData = [
   { name: 'Page A', pv: 2400, uv: 4000 },
@@ -31,36 +33,11 @@ const stats = [
 
 function AdminDashboard() {
   return (
-    <div className="min-h-screen bg-white font-serif">
-      {/* Header */}
-      <header className="flex items-center justify-between px-6 py-3">
-        <h1 className="text-xl font-bold tracking-wide">BOOKSTORE</h1>
-        <button className="flex items-center gap-2 rounded bg-black px-4 py-2 text-sm text-white">
-          Logout <FaPowerOff />
-        </button>
-      </header>
+    <div className="flex min-h-screen flex-col bg-white font-serif">
+      <AdminHeader />
 
-      {/* Marquee */}
-      <div className="overflow-hidden bg-black py-3 text-sm text-white">
-        <marquee>Welcome Admin, Your all set to manage the bookstore.</marquee>
-      </div>
-
-      <div className="flex">
-        {/* Sidebar */}
-        <aside className="flex w-56 shrink-0 flex-col items-center bg-blue-100 pt-8" style={{ minHeight: 'calc(100vh - 110px)' }}>
-          <img
-            src="https://i.pravatar.cc/150?img=12"
-            alt="Admin"
-            className="h-24 w-24 rounded-full object-cover"
-          />
-          <h2 className="mt-4 text-base font-bold">Bookstore Admin</h2>
-          <nav className="mt-8 flex flex-col gap-3 text-sm">
-            <Link to="/admin" className="flex items-center gap-2"><FaChartBar /> Dashboard</Link>
-            <Link to="/admin/collections" className="flex items-center gap-2"><FaDatabase /> Collections</Link>
-            <Link to="/admin/settings" className="flex items-center gap-2"><FaCog /> Settings</Link>
-          </nav>
-        </aside>
-
+      <div className="flex flex-1">
+        <AdminSidebar />
         {/* Main */}
         <main className="flex-1 p-8">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">

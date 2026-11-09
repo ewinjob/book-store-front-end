@@ -1,24 +1,19 @@
 import React, { useState } from "react";
-import { Button } from "flowbite-react";
-import {
-  FaBook,
-  FaTachometerAlt,
-  FaCog,
-  FaUsers,
-  FaCheck,
-  FaSignOutAlt,
-  FaStar,
-  FaBookOpen,
-} from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { getAllBooksAdminAPI } from "../../services/apiService";
+import { getAllBooksAdminAPI, getAllUsersAdminAPI } from "../../services/apiService";
 import { useEffect } from "react";
+import AdminHeader from "../components/AdminHeader";
+import AdminSidebar from "../components/AdminSidebar";
+
 
 
 
 function AdminResource() {
   const [activeTab, setActiveTab] = useState("Books");
 
+  const [book,setBook]=useState([])
+
+  const [user,setUser]=useState({})
 
        const token = sessionStorage.getItem('userToken')
        
@@ -31,6 +26,23 @@ function AdminResource() {
 
       const res = await getAllBooksAdminAPI(reqHeader)
       console.log(res);
+      if (res.status === 200) {
+  setBook(res.data.getBooks)
+}
+    }catch(err){
+      console.log(err);
+      
+    }
+  }
+
+  const  getAllUsersAdmin=async()=>{
+    try{
+
+      const res = await getAllUsersAdminAPI(reqHeader)
+      console.log(res);
+      if(res.status==200){
+        setUser(res.data.getUsers)
+      }
       
 
     }catch(err){
@@ -44,61 +56,17 @@ function AdminResource() {
   const navigate = useNavigate();
 
 
-  const handleLogout = () => {
-    sessionStorage.clear();
-    navigate("/login");
-  };
-
 
   useEffect(()=>{
-    getAllBooksAdmin()
+    getAllBooksAdmin(),getAllUsersAdmin()
   },[token])
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      
+    <div className="flex min-h-screen flex-col bg-white font-serif">
+      <AdminHeader />
 
-      <div className="flex min-h-[calc(100vh-112px)]">
-        {/* Sidebar */}
-        <aside className="w-56 shrink-0 bg-blue-100 px-5 py-8 sm:w-64">
-          <div className="mb-10 text-center">
-            <img
-              src="https://i.pravatar.cc/120?img=12"
-              alt="Admin profile"
-              className="mx-auto mb-4 h-20 w-20 rounded-full border-4 border-white object-cover shadow"
-            />
-
-            <h2 className="text-lg font-bold text-gray-900">
-              Bookstore Admin
-            </h2>
-          </div>
-
-          <nav className="space-y-2">
-            <Link
-              to="/admin/dashboard"
-              className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-blue-200"
-            >
-              <FaTachometerAlt />
-              Dashboard
-            </Link>
-
-            <Link
-              to="/admin/resources"
-              className="flex items-center gap-3 rounded-lg bg-blue-200 px-3 py-3 font-semibold"
-            >
-              <FaBook />
-              Collections
-            </Link>
-
-            <Link
-              to="/admin/settings"
-              className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-blue-200"
-            >
-              <FaCog />
-              Settings
-            </Link>
-          </nav>
-        </aside>
+      <div className="flex flex-1">
+        <AdminSidebar />
 
         {/* Main content */}
         <main className="min-w-0 flex-1 px-5 py-8 sm:px-8">
@@ -133,9 +101,36 @@ function AdminResource() {
 
           {/* Books tab */}
           {activeTab === "Books" && (
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-             
-            </div>
+<div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+  {book?.length > 0 ? (
+    book.map((item) => (
+      <div
+        key={item._id}
+        className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md"
+      >
+        <img
+          src={item.imageUrl}
+          alt={item.title}
+          className="h-64 w-full object-center"
+        />
+
+        <div className="flex flex-1 flex-col gap-1 p-4 text-center">
+          <p className="text-xs uppercase tracking-wide text-blue-600">
+            {item.author}
+          </p>
+          <h3 className="line-clamp-2 text-base font-bold text-gray-900">
+            {item.title}
+          </h3>
+          <p className="mt-auto pt-2 font-semibold text-red-600">
+            ₹ {item.price}
+          </p>
+        </div>
+      </div>
+    ))
+  ) : (
+    <p className="col-span-full text-center text-gray-500">No books found</p>
+  )}
+</div>
           )}
 
           {/* Users tab */}
@@ -151,9 +146,24 @@ function AdminResource() {
                   </tr>
                 </thead>
 
-                <tbody>
-                
-                </tbody>
+               <tbody>
+  {user?.length > 0 ? (
+    user.map((u, index) => (
+      <tr key={u._id} className="border-t border-gray-200 hover:bg-gray-50">
+        <td className="px-6 py-4">{index + 1}</td>
+        <td className="px-6 py-4">{u.username}</td>
+        <td className="px-6 py-4">{u.email}</td>
+        <td className="px-6 py-4">{u.role}</td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan={4} className="px-6 py-6 text-center text-gray-500">
+        No users found
+      </td>
+    </tr>
+  )}
+</tbody>
               </table>
             </div>
           )}
