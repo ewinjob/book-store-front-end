@@ -1,4 +1,3 @@
-
 import axiosInstance from "../api/axiosInstance";
 
 
@@ -13,10 +12,10 @@ export const loginAPI=async(reqBody)=>{
 }
 
 
-export const getAllBooksAPI=async(reqHeader)=>{
- return await axiosInstance.get('/api/getAllBooks',{},{
-    headers:reqHeader
- })
+export const getAllBooksAPI = async (reqHeader) => {
+  return await axiosInstance.get('/api/getAllBooks', {
+    headers: reqHeader,
+  })
 }
 
 export const latestBooksAPI=async()=>{
