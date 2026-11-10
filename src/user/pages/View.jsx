@@ -10,22 +10,33 @@ function View() {
   const [loading, setLoading] = useState(true)
   const { id } = useParams()
 
+  const token = sessionStorage.getItem('userToken')
+    const reqHeader = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  console.log(reqHeader);
+  
+
   useEffect(() => {
     const getBook = async () => {
       try {
         setLoading(true)
-        const result = await viewBooksAPI(id)
+        const result = await viewBooksAPI(id,reqHeader)
         if (result.status === 200) {
           setBook(result.data.viewBooks)
         }
-      } catch (err) {
+        console.log(result);       
+      } 
+      catch (err) {
         console.log(err)
-      } finally {
+      } 
+      finally {
         setLoading(false)
       }
     }
     getBook()
-  }, [id])
+  }, [id,token])
 
   const discount =
     book && book.price > book.dprice

@@ -17,11 +17,13 @@ function Books() {
 
 
     const userToken = sessionStorage.getItem("userToken")
-
+      const reqHeader = {
+    Authorization: `Bearer ${userToken}`,
+  };
 
   const getAllBook=async()=>{ 
     try{
-          const res = await getAllBooksAPI()
+          const res = await getAllBooksAPI(reqHeader)
     console.log(res.data.getBooks);
 
     setBooks(res.data.getBooks)
@@ -49,10 +51,7 @@ function Books() {
     }
   }, [])
 
-  // useEffect(()=>{
-  //   getAllBook();
-  //   setToken(sessionStorage.getItem('userToken'))
-  // },[token])
+
 
   return (
     <>

@@ -13,8 +13,10 @@ export const loginAPI=async(reqBody)=>{
 }
 
 
-export const getAllBooksAPI=async()=>{
- return await axiosInstance.get('/api/getAllBooks',{},{})
+export const getAllBooksAPI=async(reqHeader)=>{
+ return await axiosInstance.get('/api/getAllBooks',{},{
+    headers:reqHeader
+ })
 }
 
 export const latestBooksAPI=async()=>{
@@ -22,8 +24,8 @@ export const latestBooksAPI=async()=>{
 }
 
 
-export const viewBooksAPI=async(id)=>{
-    return await axiosInstance.get(`/api/viewBooks/${id}`)
+export const viewBooksAPI=async(id,reqHeader)=>{
+    return await axiosInstance.get(`/api/viewBooks/${id}`,{headers:reqHeader})
 }
 
 export const googleLoginAPI=async(reqBody)=>{
