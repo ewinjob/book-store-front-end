@@ -1,19 +1,27 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { GrFormSearch } from "react-icons/gr";
 import Header from '../components/Header';
 import Footer from '../../components/Footer';
 import { getAllBooksAPI } from '../../services/apiService';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
+import { SearchContext } from '../../context/SearchContextShare';
 
 
 
 function Books() {
 
   const [books,setBooks]=useState([])
+
+  const {searchKey,setSearchKey}=useContext(SearchContext)
+  console.log(searchKey);
+  
+
   const navigate = useNavigate()
 
   const [token,setToken]=useState('')
+
+  // const [category,setCategory]=useState('')
 
 
     const userToken = sessionStorage.getItem("userToken")
@@ -21,12 +29,14 @@ function Books() {
     Authorization: `Bearer ${userToken}`,
   };
 
-  const getAllBook=async()=>{ 
+
+  const getAllBook=async(searchKey)=>{ 
     try{
-          const res = await getAllBooksAPI(reqHeader)
+          const res = await getAllBooksAPI(searchKey,reqHeader)
     console.log(res.data.getBooks);
 
     setBooks(res.data.getBooks)
+    
 
     }catch(err){
       console.log('showing',err);
@@ -40,7 +50,7 @@ function Books() {
 
     if (userToken) {
       setToken(userToken)
-      getAllBook()
+      getAllBook(searchKey)
     } else {
       Swal.fire({
         icon: 'warning',
@@ -49,7 +59,7 @@ function Books() {
         navigate('/login')
       })
     }
-  }, [])
+  }, [searchKey])
 
 
 
@@ -76,7 +86,7 @@ function Books() {
           <GrFormSearch className='text-2xl'/>
         </svg>
       </div>
-      <input type="text"  className="w-full min-w-0 bg-gray-400 pl-2 text-base font-semibold outline-0 sm:w-72" placeholder="" />
+      <input type="text" onChange={(e)=>setSearchKey(e.target.value)} className="w-full min-w-0 bg-gray-400 pl-2 text-base font-semibold outline-0 sm:w-72" placeholder="" />
       <input type="button" value="Search" className="bg-blue-500 px-4 py-2 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-blue-800 transition-colors"/>
     </div>
   </div>

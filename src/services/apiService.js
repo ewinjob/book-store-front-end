@@ -12,8 +12,8 @@ export const loginAPI=async(reqBody)=>{
 }
 
 
-export const getAllBooksAPI = async (reqHeader) => {
-  return await axiosInstance.get('/api/getAllBooks', {
+export const getAllBooksAPI = async (searchKey,reqHeader) => {
+  return await axiosInstance.get(`/api/getAllBooks?search=${searchKey}`, {
     headers: reqHeader,
   })
 }
