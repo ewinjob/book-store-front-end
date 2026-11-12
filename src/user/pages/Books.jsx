@@ -23,6 +23,9 @@ function Books() {
 
   // const [category,setCategory]=useState('')
 
+  const categories = [...new Set(books.map(book => book.category))]
+  console.log(categories,'got it');
+  
 
     const userToken = sessionStorage.getItem("userToken")
       const reqHeader = {
@@ -78,64 +81,77 @@ function Books() {
       </h2>
     </div>
 
-    <div className="flex items-center justify-center p-5">
-  <div className="rounded-lg p-5">
-    <div className="flex items-stretch">
-      <div className="flex w-12 shrink-0 items-center justify-center rounded-tl-lg rounded-bl-lg border-r border-gray-200 bg-blue-500">
-        <svg viewBox="0 0 20 20" aria-hidden="true" className="pointer-events-none flex w-5 items-center justify-center fill-gray-500 transition">
-          <GrFormSearch className='text-2xl'/>
-        </svg>
-      </div>
-      <input type="text" onChange={(e)=>setSearchKey(e.target.value)} className="w-full min-w-0 bg-gray-400 pl-2 text-base font-semibold outline-0 sm:w-72" placeholder="" />
-      <input type="button" value="Search" className="bg-blue-500 px-4 py-2 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-blue-800 transition-colors"/>
-    </div>
+<div className='flex items-center justify-center p-5'>
+  <div className='flex w-full max-w-xl items-center gap-2 rounded-full border border-gray-200 bg-white/60 backdrop-blur pl-4 pr-1.5 py-1.5 transition focus-within:border-gray-400 focus-within:ring-4 focus-within:ring-gray-100'>
+
+    <GrFormSearch className='shrink-0 text-2xl text-gray-400' />
+
+    <input
+      type="text"
+      required
+      onChange={(e) => setSearchKey(e.target.value)}
+      className='w-full min-w-0 bg-transparent text-sm text-gray-800 placeholder:text-gray-400 outline-none'
+      placeholder='Search by title...'
+    />
+
+    <button
+      type="button"
+      className='shrink-0 rounded-full bg-gray-900 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-700'
+    >
+      Search
+    </button>
+
   </div>
 </div>
 
 
      <main className='flex flex-col items-center justify-center gap-6 mx-4 lg:flex-row lg:items-start lg:gap-10 lg:mx-10'>
-       <aside className='pb-10 lg:w-56 lg:shrink-0'>
+ <aside className='pb-10 lg:w-60 lg:shrink-0'>
+  <div className='lg:sticky lg:top-24 rounded-2xl border border-gray-200 bg-white/60 backdrop-blur p-5'>
 
-        <div className='my-5'>
-             <h2 className='font-bold text-3xl'>
-          Filter
-        </h2>
-            </div>
-       
-               <section className='flex flex-col justify-center gap-2 ms-5  items-start'>
+    {/* Header */}
+    <div className='flex items-center justify-between pb-4 mb-3 border-b border-gray-200'>
+      <h2 className='font-semibold text-xl tracking-tight text-gray-900'>
+        Filter
+      </h2>
+      <span className='text-xs uppercase tracking-widest text-gray-400'>
+        Category
+      </span>
+    </div>
 
-          <label className='flex items-center cursor-pointer'>
-            <input type="checkbox" />
-            <span className='mx-2'>All</span>
+    {/* Options */}
+    <section className='flex flex-col gap-1'>
+
+      <label className='group flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-100'>
+        <input
+          type="checkbox"
+          className='h-4 w-4 rounded border-gray-300 accent-black cursor-pointer'
+        />
+        <span className='text-sm font-medium text-gray-700 group-hover:text-black'>
+          All
+        </span>
+      </label>
+
+      {
+        categories.map((category, index) => (
+          <label
+            key={index}
+            className='group flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-100'
+          >
+            <input
+              type="checkbox"
+              className='h-4 w-10 rounded border-gray-300 accent-black cursor-pointer'
+            />
+            <span className='text-sm text-gray-600 group-hover:text-black'>
+              {category}
+            </span>
           </label>
+        ))
+      }
+    </section>
 
-          <label className='flex items-center cursor-pointer'>
-            <input type="checkbox" />
-            <span className='mx-2'>History</span>
-          </label>
-
-          <label className='flex items-center cursor-pointer'>
-            <input type="checkbox" />
-            <span className='mx-2'>Fantasy</span>
-          </label>
-
-          <label className='flex items-center cursor-pointer'>
-            <input type="checkbox" />
-            <span className='mx-2'>Programming</span>
-          </label>
-
-          <label className='flex items-center cursor-pointer'>
-            <input type="checkbox" />
-            <span className='mx-2'>Self-help</span>
-          </label>
-
-          <label className='flex items-center cursor-pointer'>
-            <input type="checkbox" />
-            <span className='mx-2'>Finance</span>
-          </label>
-        </section>
-
-      </aside>
+  </div>
+</aside>
 
       <aside className='flex flex-1 px-5 flex-wrap justify-center gap-5 lg:justify-start'>
 

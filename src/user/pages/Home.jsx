@@ -9,7 +9,7 @@ import { latestBooksAPI } from '../../services/apiService'
 function Home() {
   const [latestBooks, setLatestBooks] = useState([])
   const [loading, setLoading] = useState(true)
-  const [searchKey, setSearchKey] = useState('')
+  // const [searchKey, setSearchKey] = useState('')
   const navigate = useNavigate()
 
   const getLatestBooks = async () => {
@@ -28,17 +28,12 @@ function Home() {
     getLatestBooks()
   }, [])
 
-  const handleSearch = (e) => {
-    e.preventDefault()
-    if (searchKey.trim()) {
-      navigate(`/books?search=${encodeURIComponent(searchKey.trim())}`)
-    }
-  }
 
-  const handleNewsletter = (e) => {
-    e.preventDefault()
+
+  // const handleNewsletter = (e) => {
+  //   e.preventDefault()
     
-  }
+  // }
 
   return (
     <>
@@ -59,13 +54,11 @@ function Home() {
             Gift your family &amp; friends a book
           </p>
 
-          <form onSubmit={handleSearch} className="mt-10 flex w-full max-w-sm items-center gap-2">
+          <form className="mt-10 flex w-full max-w-sm items-center gap-2">
             <div className="flex-1">
               <TextInput
                 type="text"
                 placeholder="Search books"
-                value={searchKey}
-                onChange={(e) => setSearchKey(e.target.value)}
                 required
               />
             </div>
@@ -104,7 +97,7 @@ function Home() {
               </Link>
             ))
           ) : (
-            <p>No books available yet.</p>
+            "No books available yet"
           )}
         </section>
 
@@ -183,7 +176,7 @@ function Home() {
           <div>
             <h3 className="mb-4 text-sm font-bold uppercase tracking-wide">News Letter</h3>
             <p className="mb-4 text-sm">Stay updated with our latest trends</p>
-            <form onSubmit={handleNewsletter} className="flex w-full max-w-220px">
+            <form className="flex w-full max-w-220px">
               <input
                 type="email"
                 required

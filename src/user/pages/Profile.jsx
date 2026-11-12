@@ -173,9 +173,9 @@ function Profile() {
         <h1 className='text-center'> Upload Book Details </h1>
         <div>
             <div>
-               <form className='flex justify-between '>
+               <form className='flex justify-between required'>
                   <div className='p-5  flex flex-col gap-4 w-96'>
-                <input type="text" onChange={(e)=>setBookDetails({...bookDetails,title:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Book Title' />
+                <input type="text" required onChange={(e)=>setBookDetails({...bookDetails,title:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Book Title' />
                 <input type="text" onChange={(e)=>setBookDetails({...bookDetails,author:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Author' />
                 <input type="text" onChange={(e)=>setBookDetails({...bookDetails,imageURL:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Book Cover img URL' />
                 <input type="text" onChange={(e)=>setBookDetails({...bookDetails,totalPages:e.target.value})} className='bg-white p-1 rounded-sm' placeholder='Total Pages' />
@@ -232,10 +232,10 @@ function Profile() {
                       <span className="relative group-hover:text-white">Reset</span>
                                     </a>
 
-                       <a href="#_"  onClick={handleSubmit} className="rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer border-b-4 border-l-2 active:border-purple-600 active:shadow-none shadow-lg bg-linear-to-tr from-purple-600 to-purple-500 border-purple-700 text-white">
+                       <button type='button'  onClick={handleSubmit} className="rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer border-b-4 border-l-2 active:border-purple-600 active:shadow-none shadow-lg bg-linear-to-tr from-purple-600 to-purple-500 border-purple-700 text-white">
                       <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-32 group-hover:h-32 opacity-10"></span>
                        <span className="relative">Upload Book Details</span>
-                      </a>
+                      </button>
                 </div>
 
              </div>
