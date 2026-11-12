@@ -51,3 +51,8 @@ export const getAllUsersAdminAPI=async(reqHeader)=>{
  })
 }
 
+
+// payment
+export const makePaymentAPI=async(reqBody,reqHeader)=>{
+    return await axiosInstance.put('/api/makePayment',reqBody,{headers:reqHeader})
+}

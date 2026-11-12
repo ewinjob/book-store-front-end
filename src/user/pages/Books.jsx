@@ -23,8 +23,6 @@ function Books() {
 
   // const [category,setCategory]=useState('')
 
-  const categories = [...new Set(books.map(book => book.category))]
-  console.log(categories,'got it');
   
 
     const userToken = sessionStorage.getItem("userToken")
@@ -48,9 +46,10 @@ function Books() {
     
   }
 
-    useEffect(() => {
-    const userToken = sessionStorage.getItem('userToken')
+  const categories = [...new Set(books.map(book => book.category))]
+  console.log(categories,'got it');
 
+    useEffect(() => {
     if (userToken) {
       setToken(userToken)
       getAllBook(searchKey)
@@ -65,12 +64,12 @@ function Books() {
   }, [searchKey])
 
 
+  const filterRow =
+  'group flex items-center gap-3 rounded-full border border-gray-200 px-3 py-1.5 cursor-pointer transition-colors hover:bg-gray-100 has-[:checked]:border-gray-400 has-[:checked]:bg-gray-100 lg:rounded-lg lg:border-transparent lg:py-2 lg:has-[:checked]:border-transparent'
 
   return (
     <>
-    
      <Header/>
-
      {
       token?
       (
@@ -104,111 +103,96 @@ function Books() {
   </div>
 </div>
 
+     <main className='flex flex-col gap-6 mx-4 lg:flex-row lg:items-start lg:gap-10 lg:mx-10'>
 
-     <main className='flex flex-col items-center justify-center gap-6 mx-4 lg:flex-row lg:items-start lg:gap-10 lg:mx-10'>
- <aside className='pb-10 lg:w-60 lg:shrink-0'>
-  <div className='lg:sticky lg:top-24 rounded-2xl border border-gray-200 bg-white/60 backdrop-blur p-5'>
+  
+  <aside className='w-full pb-6 lg:w-60 lg:shrink-0 lg:self-stretch'>
+    <div className='lg:sticky lg:top-24 rounded-2xl border border-gray-200 bg-white/60 backdrop-blur p-5'>
 
-    {/* Header */}
-    <div className='flex items-center justify-between pb-4 mb-3 border-b border-gray-200'>
-      <h2 className='font-semibold text-xl tracking-tight text-gray-900'>
-        Filter
-      </h2>
-      <span className='text-xs uppercase tracking-widest text-gray-400'>
-        Category
-      </span>
-    </div>
-
-    {/* Options */}
-    <section className='flex flex-col gap-1'>
-
-      <label className='group flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-100'>
-        <input
-          type="checkbox"
-          className='h-4 w-4 rounded border-gray-300 accent-black cursor-pointer'
-        />
-        <span className='text-sm font-medium text-gray-700 group-hover:text-black'>
-          All
+      <div className='flex items-center justify-between pb-4 mb-3 border-b border-gray-200'>
+        <h2 className='font-semibold text-xl tracking-tight text-gray-900'>
+          Filter
+        </h2>
+        <span className='text-xs uppercase tracking-widest text-gray-400'>
+          Category
         </span>
-      </label>
+      </div>
 
-      {
-        categories.map((category, index) => (
-          <label
-            key={index}
-            className='group flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-100'
-          >
-            <input
-              type="checkbox"
-              className='h-4 w-10 rounded border-gray-300 accent-black cursor-pointer'
-            />
-            <span className='text-sm text-gray-600 group-hover:text-black'>
-              {category}
-            </span>
-          </label>
-        ))
-      }
-    </section>
+      <section className='flex flex-row flex-wrap gap-2 lg:flex-col lg:gap-1'>
 
-  </div>
-</aside>
-
-      <aside className='flex flex-1 px-5 flex-wrap justify-center gap-5 lg:justify-start'>
+        <label className={filterRow}>
+          <input
+            type="checkbox"
+            className='h-4 w-4 rounded border-gray-300 accent-black cursor-pointer'
+          />
+          <span className='text-sm font-medium text-gray-700 group-hover:text-black'>
+            All
+          </span>
+        </label>
 
         {
-  books.length > 0 ? (
-    books.map((item) => (
-      <Link
-            to={`/books/${item._id}`}>
-      <div
-        key={item._id}
-        className="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg w-50"
-      >
-        <div className="relative h-60 m-2.5 overflow-hidden text-white rounded-md">
-          <img
-            src={item.imageUrl}
-            width={500}
-            alt={item.title}
-            className="h-full w-full object-cover"
-          />
-        </div>
+          categories.map((category, index) => (
+            <label key={index} className={filterRow}>
+              <input
+                type="checkbox"
+                className='h-4 w-4 rounded border-gray-300 accent-black cursor-pointer'
+              />
+              <span className='text-sm text-gray-600 group-hover:text-black'>
+                {category}
+              </span>
+            </label>
+          ))
+        }
+      </section>
 
-        <div className="p-4">
-          <h6 className="mb-2 text-slate-800 text-xl font-semibold">
-            {item.title}
-          </h6>
-          <p className="text-slate-600 leading-normal font-light">
-            {item.author}
-          </p>
+    </div>
+  </aside>
 
-          <button
-            className="flex justify-center items-center rounded-xl mx-auto px-6 my-auto mt-3 bg-sky-100 hover:bg-sky-200"
-          >
-            View
-            </button>
-          
-        </div>
-      </div>
-      </Link>
-    ))
-  ) : (
-    <p>No Books</p>
-  )
-}
-      </aside>
-     </main>
+  
+  <aside className='flex flex-1 flex-wrap justify-center gap-5 px-5 lg:justify-start'>
+    {
+      books.length > 0 ? (
+        books.map((item) => (
+          <Link key={item._id} to={`/books/${item._id}`} className='group'>
+            <div className='flex w-52 flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white/60 transition duration-300 hover:-translate-y-1 hover:border-gray-300 hover:shadow-md'>
+
+              <div className='h-60 overflow-hidden'>
+                <img
+                  src={item.imageUrl}
+                  alt={item.title}
+                  className='h-full w-full object-cover transition duration-300 group-hover:scale-105'
+                />
+              </div>
+
+              <div className='p-4'>
+                <h6 className='truncate text-base font-semibold text-gray-900'>
+                  {item.title}
+                </h6>
+                <p className='mt-0.5 truncate text-sm text-gray-500'>
+                  {item.author}
+                </p>
+
+                <button className='mt-4 w-full rounded-full border border-gray-200 py-1.5 text-sm font-medium text-gray-700 transition-colors group-hover:border-gray-900 group-hover:bg-gray-900 group-hover:text-white'>
+                  View
+                </button>
+              </div>
+
+            </div>
+          </Link>
+        ))
+      ) : (
+        <p className='text-gray-400'>No Books</p>
+      )
+    }
+  </aside>
+
+</main>
   </div>
       ) : (
         null
       )
      }
-
-     
-
      <Footer/>
-    
-    
-
     </>
   )
 }

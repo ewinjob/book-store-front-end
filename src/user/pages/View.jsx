@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import { Link, useParams } from 'react-router-dom'
-import { viewBooksAPI } from '../../services/apiService'
+import { makePaymentAPI, viewBooksAPI } from '../../services/apiService'
 import Footer from '../../components/Footer'
+import {loadStripe} from '@stripe/stripe-js'
 
 
 function View() {
@@ -16,10 +17,8 @@ function View() {
   };
 
   console.log(reqHeader);
-  
 
-  useEffect(() => {
-    const getBook = async () => {
+      const getBook = async () => {
       try {
         setLoading(true)
         const result = await viewBooksAPI(id,reqHeader)
@@ -35,6 +34,34 @@ function View() {
         setLoading(false)
       }
     }
+
+
+    const makePayment=async()=>{
+
+      console.log(book);
+
+      const stripe = await loadStripe('pk_test_51UaqzkKH7wPXo5ofmbdGx1MMd2aaZG5bDI0NqjlPPHgQw2CHAGF66d9xCbBzd0t01eChXobv4qebrsgMD4fHau3N004M2l1cvm');
+      console.log(stripe);
+
+      const reqBody = {
+        bookDetails:book
+      }
+
+      console.log(reqBody);
+      console.log(reqHeader);
+ 
+      try{
+        const res = await makePaymentAPI(reqBody,reqHeader)
+        console.log(res);
+        window.location.href=res.data.checkoutURL;
+        
+      }catch(err){
+        console.log("showing",err);
+      }
+    }
+  
+
+  useEffect(() => {
     getBook()
   }, [id,token])
 
@@ -116,7 +143,7 @@ function View() {
                 >
                   <i className="fa-solid fa-backward"></i> Back
                 </Link>
-                <button className="bg-green-800 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded-md transition-colors">
+                <button onClick={makePayment} className="bg-green-800 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded-md transition-colors">
                   Buy ₹{book.dprice}
                 </button>
               </div>
